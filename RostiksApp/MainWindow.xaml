@@ -1,0 +1,18 @@
+﻿<Window x:Class="RostiksApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RostiksApp"
+        mc:Ignorable="d"
+        Title="ROSTICS" Height="600" Width="900"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="CanMinimize"
+        Icon="rostics.ico">
+
+    <!-- Главный контейнер -->
+    <Grid>
+        <!-- Frame для навигации между страницами -->
+        <Frame x:Name="MainFrame" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>

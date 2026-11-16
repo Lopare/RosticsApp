@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище RostiksDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DishCategories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Dishes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="categoryid" Type="int" Nullable="false" />
+          <Property Name="subcategoryid" Type="int" Nullable="false" />
+          <Property Name="supplierid" Type="int" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="250" Nullable="false" />
+          <Property Name="description" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="composition" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="imagePath" Type="nvarchar" MaxLength="250" />
+          <Property Name="price" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DishStock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="dishid" Type="int" Nullable="false" />
+          <Property Name="portionSizeId" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DishSubcategories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="surname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="firstname" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="patronymic" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="100" />
+          <Property Name="roleid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OrderPositions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orderid" Type="int" Nullable="false" />
+          <Property Name="dishStockId" Type="int" Nullable="false" />
+          <Property Name="quantity" Type="int" Nullable="false" />
+          <Property Name="unitPrice" Type="decimal" Precision="18" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="orderDate" Type="datetime" Nullable="false" />
+          <Property Name="employeeid" Type="int" />
+          <Property Name="status" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PortionSizes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK_Dishes_Categories">
+          <End Role="DishCategories" Type="Self.DishCategories" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishCategories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="categoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dishes_Subcategories">
+          <End Role="DishSubcategories" Type="Self.DishSubcategories" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishSubcategories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="subcategoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dishes_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="supplierid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishStock_Dishes">
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="1" />
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dishes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DishStock">
+              <PropertyRef Name="dishid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishStock_PortionSizes">
+          <End Role="PortionSizes" Type="Self.PortionSizes" Multiplicity="1" />
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PortionSizes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DishStock">
+              <PropertyRef Name="portionSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderPositions_DishStock">
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="1" />
+          <End Role="OrderPositions" Type="Self.OrderPositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishStock">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderPositions">
+              <PropertyRef Name="dishStockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderPositions_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderPositions" Type="Self.OrderPositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderPositions">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="employeeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище RostiksDBModelContainer">
+          <EntitySet Name="DishCategories" EntityType="Self.DishCategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Dishes" EntityType="Self.Dishes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DishStock" EntityType="Self.DishStock" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DishSubcategories" EntityType="Self.DishSubcategories" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderPositions" EntityType="Self.OrderPositions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PortionSizes" EntityType="Self.PortionSizes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Dishes_Categories" Association="Self.FK_Dishes_Categories">
+            <End Role="DishCategories" EntitySet="DishCategories" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dishes_Subcategories" Association="Self.FK_Dishes_Subcategories">
+            <End Role="DishSubcategories" EntitySet="DishSubcategories" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dishes_Suppliers" Association="Self.FK_Dishes_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishStock_Dishes" Association="Self.FK_DishStock_Dishes">
+            <End Role="Dishes" EntitySet="Dishes" />
+            <End Role="DishStock" EntitySet="DishStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishStock_PortionSizes" Association="Self.FK_DishStock_PortionSizes">
+            <End Role="PortionSizes" EntitySet="PortionSizes" />
+            <End Role="DishStock" EntitySet="DishStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Roles" Association="Self.FK_Employees_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderPositions_DishStock" Association="Self.FK_OrderPositions_DishStock">
+            <End Role="DishStock" EntitySet="DishStock" />
+            <End Role="OrderPositions" EntitySet="OrderPositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderPositions_Orders" Association="Self.FK_OrderPositions_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderPositions" EntitySet="OrderPositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Employees" Association="Self.FK_Orders_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="RostiksDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DishCategories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK_Dishes_Categories" FromRole="DishCategories" ToRole="Dishes" />
+        </EntityType>
+        <EntityType Name="Dishes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="categoryid" Type="Int32" Nullable="false" />
+          <Property Name="subcategoryid" Type="Int32" Nullable="false" />
+          <Property Name="supplierid" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="description" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="composition" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="imagePath" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="price" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="DishCategories" Relationship="Self.FK_Dishes_Categories" FromRole="Dishes" ToRole="DishCategories" />
+          <NavigationProperty Name="DishSubcategories" Relationship="Self.FK_Dishes_Subcategories" FromRole="Dishes" ToRole="DishSubcategories" />
+          <NavigationProperty Name="Suppliers" Relationship="Self.FK_Dishes_Suppliers" FromRole="Dishes" ToRole="Suppliers" />
+          <NavigationProperty Name="DishStock" Relationship="Self.FK_DishStock_Dishes" FromRole="Dishes" ToRole="DishStock" />
+        </EntityType>
+        <EntityType Name="DishStock">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="dishid" Type="Int32" Nullable="false" />
+          <Property Name="portionSizeId" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK_DishStock_Dishes" FromRole="DishStock" ToRole="Dishes" />
+          <NavigationProperty Name="PortionSizes" Relationship="Self.FK_DishStock_PortionSizes" FromRole="DishStock" ToRole="PortionSizes" />
+          <NavigationProperty Name="OrderPositions" Relationship="Self.FK_OrderPositions_DishStock" FromRole="DishStock" ToRole="OrderPositions" />
+        </EntityType>
+        <EntityType Name="DishSubcategories">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK_Dishes_Subcategories" FromRole="DishSubcategories" ToRole="Dishes" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="surname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="firstname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="patronymic" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="roleid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Roles" Relationship="Self.FK_Employees_Roles" FromRole="Employees" ToRole="Roles" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Employees" FromRole="Employees" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="OrderPositions">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orderid" Type="Int32" Nullable="false" />
+          <Property Name="dishStockId" Type="Int32" Nullable="false" />
+          <Property Name="quantity" Type="Int32" Nullable="false" />
+          <Property Name="unitPrice" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+          <NavigationProperty Name="DishStock" Relationship="Self.FK_OrderPositions_DishStock" FromRole="OrderPositions" ToRole="DishStock" />
+          <NavigationProperty Name="Orders" Relationship="Self.FK_OrderPositions_Orders" FromRole="OrderPositions" ToRole="Orders" />
+        </EntityType>
+        <EntityType Name="Orders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="orderDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="employeeid" Type="Int32" />
+          <Property Name="status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Orders_Employees" FromRole="Orders" ToRole="Employees" />
+          <NavigationProperty Name="OrderPositions" Relationship="Self.FK_OrderPositions_Orders" FromRole="Orders" ToRole="OrderPositions" />
+        </EntityType>
+        <EntityType Name="PortionSizes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DishStock" Relationship="Self.FK_DishStock_PortionSizes" FromRole="PortionSizes" ToRole="DishStock" />
+        </EntityType>
+        <EntityType Name="Roles">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_Employees_Roles" FromRole="Roles" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Suppliers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Dishes" Relationship="Self.FK_Dishes_Suppliers" FromRole="Suppliers" ToRole="Dishes" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_Dishes_Categories">
+          <End Role="DishCategories" Type="Self.DishCategories" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishCategories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="categoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dishes_Subcategories">
+          <End Role="DishSubcategories" Type="Self.DishSubcategories" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishSubcategories">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="subcategoryid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Dishes_Suppliers">
+          <End Role="Suppliers" Type="Self.Suppliers" Multiplicity="1" />
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Dishes">
+              <PropertyRef Name="supplierid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishStock_Dishes">
+          <End Role="Dishes" Type="Self.Dishes" Multiplicity="1" />
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dishes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DishStock">
+              <PropertyRef Name="dishid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DishStock_PortionSizes">
+          <End Role="PortionSizes" Type="Self.PortionSizes" Multiplicity="1" />
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PortionSizes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="DishStock">
+              <PropertyRef Name="portionSizeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderPositions_DishStock">
+          <End Role="DishStock" Type="Self.DishStock" Multiplicity="1" />
+          <End Role="OrderPositions" Type="Self.OrderPositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DishStock">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderPositions">
+              <PropertyRef Name="dishStockId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employees_Roles">
+          <End Role="Roles" Type="Self.Roles" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Roles">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="roleid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Orders_Employees">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="0..1" />
+          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Orders">
+              <PropertyRef Name="employeeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OrderPositions_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="OrderPositions" Type="Self.OrderPositions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="OrderPositions">
+              <PropertyRef Name="orderid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="RostiksDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DishCategories" EntityType="Self.DishCategories" />
+          <EntitySet Name="Dishes" EntityType="Self.Dishes" />
+          <EntitySet Name="DishStock" EntityType="Self.DishStock" />
+          <EntitySet Name="DishSubcategories" EntityType="Self.DishSubcategories" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" />
+          <EntitySet Name="OrderPositions" EntityType="Self.OrderPositions" />
+          <EntitySet Name="Orders" EntityType="Self.Orders" />
+          <EntitySet Name="PortionSizes" EntityType="Self.PortionSizes" />
+          <EntitySet Name="Roles" EntityType="Self.Roles" />
+          <EntitySet Name="Suppliers" EntityType="Self.Suppliers" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <AssociationSet Name="FK_Dishes_Categories" Association="Self.FK_Dishes_Categories">
+            <End Role="DishCategories" EntitySet="DishCategories" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dishes_Subcategories" Association="Self.FK_Dishes_Subcategories">
+            <End Role="DishSubcategories" EntitySet="DishSubcategories" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Dishes_Suppliers" Association="Self.FK_Dishes_Suppliers">
+            <End Role="Suppliers" EntitySet="Suppliers" />
+            <End Role="Dishes" EntitySet="Dishes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishStock_Dishes" Association="Self.FK_DishStock_Dishes">
+            <End Role="Dishes" EntitySet="Dishes" />
+            <End Role="DishStock" EntitySet="DishStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DishStock_PortionSizes" Association="Self.FK_DishStock_PortionSizes">
+            <End Role="PortionSizes" EntitySet="PortionSizes" />
+            <End Role="DishStock" EntitySet="DishStock" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderPositions_DishStock" Association="Self.FK_OrderPositions_DishStock">
+            <End Role="DishStock" EntitySet="DishStock" />
+            <End Role="OrderPositions" EntitySet="OrderPositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employees_Roles" Association="Self.FK_Employees_Roles">
+            <End Role="Roles" EntitySet="Roles" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Orders_Employees" Association="Self.FK_Orders_Employees">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OrderPositions_Orders" Association="Self.FK_OrderPositions_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="OrderPositions" EntitySet="OrderPositions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище RostiksDBModelContainer" CdmEntityContainer="RostiksDBEntities">
+          <EntitySetMapping Name="DishCategories">
+            <EntityTypeMapping TypeName="RostiksDBModel.DishCategories">
+              <MappingFragment StoreEntitySet="DishCategories">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Dishes">
+            <EntityTypeMapping TypeName="RostiksDBModel.Dishes">
+              <MappingFragment StoreEntitySet="Dishes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="categoryid" ColumnName="categoryid" />
+                <ScalarProperty Name="subcategoryid" ColumnName="subcategoryid" />
+                <ScalarProperty Name="supplierid" ColumnName="supplierid" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="composition" ColumnName="composition" />
+                <ScalarProperty Name="imagePath" ColumnName="imagePath" />
+                <ScalarProperty Name="price" ColumnName="price" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DishStock">
+            <EntityTypeMapping TypeName="RostiksDBModel.DishStock">
+              <MappingFragment StoreEntitySet="DishStock">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="dishid" ColumnName="dishid" />
+                <ScalarProperty Name="portionSizeId" ColumnName="portionSizeId" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DishSubcategories">
+            <EntityTypeMapping TypeName="RostiksDBModel.DishSubcategories">
+              <MappingFragment StoreEntitySet="DishSubcategories">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="RostiksDBModel.Employees">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="surname" ColumnName="surname" />
+                <ScalarProperty Name="firstname" ColumnName="firstname" />
+                <ScalarProperty Name="patronymic" ColumnName="patronymic" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="roleid" ColumnName="roleid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderPositions">
+            <EntityTypeMapping TypeName="RostiksDBModel.OrderPositions">
+              <MappingFragment StoreEntitySet="OrderPositions">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orderid" ColumnName="orderid" />
+                <ScalarProperty Name="dishStockId" ColumnName="dishStockId" />
+                <ScalarProperty Name="quantity" ColumnName="quantity" />
+                <ScalarProperty Name="unitPrice" ColumnName="unitPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="RostiksDBModel.Orders">
+              <MappingFragment StoreEntitySet="Orders">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="employeeid" ColumnName="employeeid" />
+                <ScalarProperty Name="status" ColumnName="status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PortionSizes">
+            <EntityTypeMapping TypeName="RostiksDBModel.PortionSizes">
+              <MappingFragment StoreEntitySet="PortionSizes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Roles">
+            <EntityTypeMapping TypeName="RostiksDBModel.Roles">
+              <MappingFragment StoreEntitySet="Roles">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Suppliers">
+            <EntityTypeMapping TypeName="RostiksDBModel.Suppliers">
+              <MappingFragment StoreEntitySet="Suppliers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="RostiksDBModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
